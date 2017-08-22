@@ -49,7 +49,8 @@ class SESBackend(BaseEmailBackend):
                  aws_region_endpoint=None, aws_auto_throttle=None,
                  dkim_domain=None, dkim_key=None, dkim_selector=None,
                  dkim_headers=None, proxy=None, proxy_port=None,
-                 proxy_user=None, proxy_pass=None, **kwargs):
+                 proxy_user=None, proxy_pass=None, default_message_tags=None,
+                 default_configuration_set=None, **kwargs):
 
         super(SESBackend, self).__init__(fail_silently=fail_silently, **kwargs)
         self._access_key_id = aws_access_key or settings.ACCESS_KEY
@@ -62,6 +63,10 @@ class SESBackend(BaseEmailBackend):
         self._proxy_port = proxy_port or settings.AWS_SES_PROXY_PORT
         self._proxy_user = proxy_user or settings.AWS_SES_PROXY_USER
         self._proxy_pass = proxy_pass or settings.AWS_SES_PROXY_PASS
+        self._default_configuration_set = default_configuration_set or \
+                                          settings.AWS_SES_DEFAULT_CONFIGURATION_SET
+        self._default_message_tags = default_message_tags or \
+                                     settings.AWS_SES_DEFAULT_MESSAGE_TAGS
 
         self.dkim_domain = dkim_domain or settings.DKIM_DOMAIN
         self.dkim_key = dkim_key or settings.DKIM_PRIVATE_KEY
@@ -161,6 +166,14 @@ class SESBackend(BaseEmailBackend):
 
                 recent_send_times.append(now)
                 # end of throttling
+
+            if (self._default_configuration_set and 'X-SES-CONFIGURATION-SET'
+                not in message.extra_headers):
+                message.extra_headers['X-SES-CONFIGURATION-SET'] = self._default_configuration_set
+
+            if (self._default_message_tags and 'X-SES-MESSAGE-TAGS' not
+                in message.extra_headers):
+                message.extra_headers['X-SES-MESSAGE-TAGS'] = self._default_message_tags
 
             try:
                 response = self.connection.send_raw_email(

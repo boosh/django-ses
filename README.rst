@@ -285,6 +285,15 @@ Full List of Settings
 ``AWS_SES_PROXY_PASS``
   Optional. Use this password when setting up proxy connections while connecting to Amazon SES.
 
+``AWS_SES_DEFAULT_CONFIGURATION_SET``
+  Default Configuration Set to use when sending emails. Can be set per
+  EmailMessage instance by setting an `X-SES-CONFIGURATION-SET` header. For more
+  details see: http://docs.aws.amazon.com/ses/latest/DeveloperGuide/event-publishing-send-email.html
+
+``AWS_SES_DEFAULT_MESSAGE_TAGS``
+  Default message tags to use when sending emails. Can be set per
+  EmailMessage instance by setting an `X-SES-MESSAGE-TAGS` header. For more
+  details see: http://docs.aws.amazon.com/ses/latest/DeveloperGuide/event-publishing-send-email.html
 
 ``TIME_ZONE``
   Default Django setting, optionally set this. Details:

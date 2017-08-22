@@ -1,5 +1,4 @@
 from django.conf import settings
-from boto.ses import SESConnection
 
 __all__ = ('ACCESS_KEY', 'SECRET_KEY', 'AWS_SES_REGION_NAME',
         'AWS_SES_REGION_ENDPOINT', 'AWS_SES_AUTO_THROTTLE',
@@ -23,6 +22,10 @@ AWS_SES_PROXY = getattr(settings, 'AWS_SES_PROXY', None)
 AWS_SES_PROXY_PORT = getattr(settings, 'AWS_SES_PROXY_PORT', None)
 AWS_SES_PROXY_USER = getattr(settings, 'AWS_SES_PROXY_USER', None)
 AWS_SES_PROXY_PASS = getattr(settings, 'AWS_SES_PROXY_PASS', None)
+AWS_SES_DEFAULT_CONFIGURATION_SET = getattr(
+    settings, 'AWS_SES_DEFAULT_CONFIGURATION_SET', None)
+AWS_SES_DEFAULT_MESSAGE_TAGS = getattr(
+    settings, 'AWS_SES_DEFAULT_MESSAGE_TAGS', None)
 
 DKIM_DOMAIN = getattr(settings, "DKIM_DOMAIN", None)
 DKIM_PRIVATE_KEY = getattr(settings, 'DKIM_PRIVATE_KEY', None)
